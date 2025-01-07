@@ -27,6 +27,10 @@ func main() {
 		fmt.Println("The length you have specified is too small. Please select a larger length (at least 8).")
 		fmt.Println("Program Exiting.")
 		os.Exit(0)
+	} else if *passwordLength > 256 {
+		fmt.Println("The length you have specified is too large. Please select a smaller length (maximum 256).")
+		fmt.Println("Program Exiting.")
+		os.Exit(0)
 	}
 
 	//fmt.Println(*lowercase || *capital || *symbols || *numbers)
@@ -36,39 +40,24 @@ func main() {
 		fmt.Println("Program Exiting.")
 		os.Exit(0)
 	}
+	pool := ""
+	if *lowercase {
+		pool = pool + low
+	}
+	if *capital {
+		pool = pool + upp
+	}
+	if *symbols {
+		pool = pool + sp
+	}
+	if *numbers {
+		pool = pool + num
+	}
 
 	//fmt.Println(*passwordLength, *lowercase, *capital, *symbols, *numbers)
 	generatedPassword := ""
-	var temp int
 	for i := 0; i < *passwordLength; i++ {
-		temp = rand.Intn(4)
-		if temp == 0 {
-			if *lowercase {
-				generatedPassword = generatedPassword + string(low[rand.Intn(26)])
-			} else {
-				i = i - 1
-			}
-		} else if temp == 1 {
-			if *capital {
-				generatedPassword = generatedPassword + string(upp[rand.Intn(26)])
-			} else {
-				i = i - 1
-			}
-		} else if temp == 2 {
-			if *numbers {
-				generatedPassword = generatedPassword + string(num[rand.Intn(10)])
-			} else {
-				i = i - 1
-			}
-		} else if temp == 3 {
-			if *symbols {
-				generatedPassword = generatedPassword + string(sp[rand.Intn(27)])
-			} else {
-				i = i - 1
-			}
-		} else {
-			fmt.Println("Error!")
-		}
+		generatedPassword = generatedPassword + string(pool[rand.Intn(len(pool))])
 	}
 	fmt.Println(generatedPassword)
 
